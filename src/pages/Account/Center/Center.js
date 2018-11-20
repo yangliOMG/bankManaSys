@@ -5,56 +5,27 @@ import Link from 'umi/link';
 import router from 'umi/router';
 import { Card, Row, Col, Icon, Avatar, Tag, Divider, Spin, Input } from 'antd';
 import GridContent from '@/components/PageHeaderWrapper/GridContent';
+
 import styles from './Center.less';
 
-@connect(({ loading, user, project }) => ({
-  listLoading: loading.effects['list/fetch'],
+const authMap = ["用户","管理员"]
+
+@connect(({ user }) => ({
   currentUser: user.currentUser,
-  project,
-  projectLoading: loading.effects['project/fetchNotice'],
 }))
 class Center extends PureComponent {
   state = {
     newTags: [],
     inputVisible: false,
     inputValue: '',
-  };
+  }
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({
       type: 'user/fetchCurrent',
     });
-    // dispatch({
-    //   type: 'list/fetch',
-    //   payload: {
-    //     count: 8,
-    //   },
-    // });
-    // dispatch({
-    //   type: 'project/fetchNotice',
-    // });
   }
-
-  onTabChange = key => {
-    const { match } = this.props;
-    switch (key) {
-      case 'message':
-        router.push(`${match.url}/message`);
-        break;
-      case 'articles':
-        router.push(`${match.url}/articles`);
-        break;
-      case 'applications':
-        router.push(`${match.url}/applications`);
-        break;
-      case 'projects':
-        router.push(`${match.url}/projects`);
-        break;
-      default:
-        break;
-    }
-  };
 
   showInput = () => {
     this.setState({ inputVisible: true }, () => this.input.focus());
@@ -83,51 +54,8 @@ class Center extends PureComponent {
   };
 
   render() {
-    const { newTags, inputVisible, inputValue } = this.state;
-    const {
-      listLoading,
-      currentUser,
-      project: { notice },
-      projectLoading,
-      match,
-      location,
-      children,
-    } = this.props;
-
-    const operationTabList = [
-      {
-        key: 'message',
-        tab: (
-          <span>
-            消息 <span style={{ fontSize: 14 }}>({currentUser.notifyCount})</span>
-          </span>
-        ),
-      },
-      // {
-      //   key: 'articles',
-      //   tab: (
-      //     <span>
-      //       文章 <span style={{ fontSize: 14 }}>(0)</span>
-      //     </span>
-      //   ),
-      // },
-      // {
-      //   key: 'applications',
-      //   tab: (
-      //     <span>
-      //       应用 <span style={{ fontSize: 14 }}>(0)</span>
-      //     </span>
-      //   ),
-      // },
-      // {
-      //   key: 'projects',
-      //   tab: (
-      //     <span>
-      //       项目 <span style={{ fontSize: 14 }}>(0)</span>
-      //     </span>
-      //   ),
-      // },
-    ];
+    const {  inputVisible, inputValue } = this.state;
+    const { listLoading, currentUser, match, location, children, } = this.props;
 
     return (
       <GridContent className={styles.userCenter}>
@@ -137,36 +65,30 @@ class Center extends PureComponent {
               {currentUser && Object.keys(currentUser).length ? (
                 <div>
                   <div className={styles.avatarHolder}>
-                    <img alt="" src={currentUser.headimgurl} />
+                    <img alt="" src={currentUser.headImg} />
                     <div className={styles.name}>
-                      {currentUser.nick}
-                      { currentUser.sex !== "女"? currentUser.sex !== "男"?
+                      {currentUser.account}
+                      {/* { currentUser.sex !== "女"? currentUser.sex !== "男"?
                            null
                            : <Icon type="man" theme="outlined" className={styles.iconMan} />
-                           : <Icon type="woman" theme="outlined" className={styles.iconWoman} />}
+                           : <Icon type="woman" theme="outlined" className={styles.iconWoman} />} */}
                     </div>
-                      <div>{currentUser.phone}</div>
+                      {/* <div>{currentUser.phone}</div> */}
                   </div>
                   <div className={styles.detail}>
-                    <p>
-                      <i className={styles.title} />
-                      {currentUser.name}
-                    </p>
-                    <p>
+                    <p><i className={styles.title} />{authMap[currentUser.manage]}</p>
+                    {/* <p>
                       <i className={styles.group} />
                       {currentUser.dept}
                     </p>
                     <p>
                       <i className={styles.address} />
                       注册日期：{moment(currentUser.createtime).format('YYYY-MM-DD')}
-                    </p>
+                    </p> */}
                   </div>
                   <Divider dashed />
                   <div className={styles.tags}>
                     <div className={styles.tagsTitle}>标签</div>
-                    {/* {currentUser.tags.concat(newTags).map(item => (
-                      <Tag key={item.key}>{item.label}</Tag>
-                    ))} */}
                     {inputVisible && (
                       <Input
                         ref={this.saveInputRef}
@@ -191,18 +113,6 @@ class Center extends PureComponent {
                   <Divider style={{ marginTop: 16 }} dashed />
                   <div className={styles.team}>
                     <div className={styles.teamTitle}>团队</div>
-                    {/* <Spin spinning={projectLoading}>
-                      <Row gutter={36}>
-                        {notice.map(item => (
-                          <Col key={item.id} lg={24} xl={12}>
-                            <Link to={item.href}>
-                              <Avatar size="small" src={item.logo} />
-                              {item.member}
-                            </Link>
-                          </Col>
-                        ))}
-                      </Row>
-                    </Spin> */}
                   </div>
                 </div>
               ) : (
@@ -214,9 +124,9 @@ class Center extends PureComponent {
             <Card
               className={styles.tabsCard}
               bordered={false}
-              tabList={operationTabList}
+              // tabList={operationTabList}
               activeTabKey={location.pathname.replace(`${match.path}/`, '')}
-              onTabChange={this.onTabChange}
+              // onTabChange={this.onTabChange}
               loading={listLoading}
             >
               {children}

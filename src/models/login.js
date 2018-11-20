@@ -5,6 +5,8 @@ import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
 
+const authMap = ['user','admin']
+
 export default {
   namespace: 'login',
 
@@ -21,7 +23,7 @@ export default {
       });
       // Login successfully
       if (response.return_code === "SUCCESS") {
-        setAuthority('admin');
+        setAuthority(authMap[response.data.manage]||"user");
         reloadAuthorized();
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();

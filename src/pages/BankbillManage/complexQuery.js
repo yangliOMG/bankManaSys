@@ -25,7 +25,8 @@ class ComplexQuery extends PureComponent {
   };
 
   columns = [
-    { title: '序号', dataIndex: 'orderid', render: (td,row,idx) => idx + 1},
+    { title: '序号', render: (td,row,idx) => idx + 1},
+    { title: '订单号', dataIndex: 'orderid'},
     { title: '交易时间', dataIndex: 'orderdate',
       render: val => <span>{moment(formatBankbillDate(val)).format('YYYY-MM-DD HH:mm:ss')}</span>,
     },
@@ -174,24 +175,24 @@ class ComplexQuery extends PureComponent {
               })(<Input placeholder="请输入" /> )}
             </FormItem>
           </Col>
-          {expandForm?<Col {...layoutValue}>
+          {expandForm && <Col {...layoutValue}>
               <FormItem label="订单号">
                 {getFieldDecorator('orderid')(<Input placeholder="请输入" />)}
               </FormItem>
-            </Col>:null}
-          {expandForm?<Col {...{...layoutValue, sm:24, md:24, xl: 12}}>
+            </Col>}
+          {expandForm && <Col {...{sm:24, md:24, xl: 12}}>
               <FormItem label="订单起止日期">
                 {getFieldDecorator('rangedate')(<RangePicker style={{ width: '100%' }} placeholder={['开始日期', '截止日期']} />)}
               </FormItem>
-            </Col> :null}
+            </Col>}
         </Row>
-        {expandForm?<Row gutter={rowValue}>
+        {expandForm && <Row gutter={rowValue}>
           <Col {...layoutValue}>
             <FormItem label="操作员">
               {getFieldDecorator('operator')(<Input placeholder="请输入" /> )}
             </FormItem>
           </Col>
-        </Row>:null}
+        </Row>}
         <div style={{ overflow: 'hidden' }}>
           <div className={styles.submitButtons2}>
             <Button type="primary" htmlType="submit">查询</Button>

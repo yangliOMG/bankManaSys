@@ -15,7 +15,7 @@ export default {
       if(response && response.return_code==="000000"){
         yield put({
           type: 'save',
-          payload: response.orders,
+          payload: {list : response.orders},
         })
       }else if(response && response.return_msg){
         message.warning(response.return_msg)
@@ -28,8 +28,8 @@ export default {
       const response = yield call(queryBill, payload)
       if(response && response.return_code==="SUCCESS"){
         yield put({
-          type: 'saveBill',
-          payload: response.payments,
+          type: 'save',
+          payload: { billList :response.payments },
         })
       }else if(response && response.return_msg){
         message.warning(response.return_msg)
@@ -44,18 +44,12 @@ export default {
     save(state, { payload }) {
       return {
         ...state,
-        list: payload,
+        ...payload,
       }
     },
     clear() {
       return {
         list: [],
-      }
-    },
-    saveBill(state, { payload }) {
-      return {
-        ...state,
-        billList: payload,
       }
     },
     clearBill() {

@@ -89,20 +89,12 @@ export default function request(
     newOptions.method === 'PUT' ||
     newOptions.method === 'DELETE'
   ) {
-    if (!(newOptions.body instanceof FormData)) {
       newOptions.headers = {
         Accept: 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
         ...newOptions.headers,
       };
       newOptions.body = qs.stringify(newOptions.body);
-    } else {
-      // newOptions.body is FormData
-      newOptions.headers = {
-        Accept: 'application/json',
-        ...newOptions.headers,
-      };
-    }
   }
 
   const expirys = options.expirys || 60;

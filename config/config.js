@@ -99,6 +99,10 @@ export default {
       "target": "http://10.9.5.130:8898/",
       "changeOrigin": true,
       "pathRewrite": { "^/api" : "" }
-    }
+    },
+    "/img": {
+      "target": "http://10.9.5.130:8898/",
+      "changeOrigin": true,
+    },
   }
 };

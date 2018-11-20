@@ -118,38 +118,6 @@ export async function queryNotices() {
 
 
 
-export async function getFakeCaptcha(mobile) {
-  return request(`/api/login/captcha?phone=${mobile}`);
-}
-export async function changeTemple(id) {
-  return request(`/api/changeTid?tid=${id}`);
-}
-export async function msgList() {
-  return request('/api/msgList');
-}
-export async function msgClear(idList) {
-  return request('/api/msgClear', {
-    method: 'POST',
-    body: [
-      ...idList,
-    ],
-  });
-}
-
-export async function getBelieverList() {
-  return request('/api/believers');
-}
-export async function getGongdeInfo() {
-  return request('/api/Gongde');
-}
-export async function getGongdeDetail(params) {
-  return request(`/api/Data?time=${params}`);
-}
-export async function getGongdeChart() {
-  return request('/api/gongdeChart');
-}
-
-
 export async function accountLogin(params) {
   return request(`/api/login`, {
     method: 'POST',            
@@ -167,8 +135,4 @@ export async function queryCCB(params) {
     method: 'POST',            
     body: params,
   });
-}
-export async function changeApply(params) {
-  const url =  params.type === 'pass'? '/api/applyPass': '/api/applyFail'
-  return request(`${url}?id=${params.id}`);
 }
